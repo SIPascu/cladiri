@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Leaflet GeoJSON Filtering with Web Worker</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/@turf/turf/turf.min.js"></script>
+</head>
+<body>
+  <div id="map" style="height: 100vh;"></div>
+
+  <script>
+    // Initialize your Leaflet map
+    var map = L.map('map').setView([51.505, -0.09], 13);
+
+    // Add a base map
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19
+    }).addTo(map);
+
+    // Add a GeoJSON layer to your map
+    var geojsonLayer = L.geoJson().addTo(map);
+
+    // Create a worker
+    var worker = new Worker('worker.js');
+
+    // Listen for messages from the worker
+    worker.addEventListener('message', function(e) {
+      var data = e.data;
+
+      switch (data.cmd) {
+        case 'filtered':
+          // Clear the existing GeoJSON data
+          geojsonLayer.clearLayers();
+
+          // Add the new GeoJSON data to your layer
+          geojsonLayer.addData({
+            type: 'FeatureCollection',
+            features: data.features
+          });
+          break;
+
+        default:
+          console.log('Unknown command: ' + data.cmd);
+      };
+    }, false);
+
+    // Load your GeoJSON data
+    fetch('data.geojson')
+      .then(response => response.json())
+      .then(data => {
+        // Save the GeoJSON data
+        var geojsonData = data;
+
+        // Listen for the 'moveend' event on your map
+        map.on('moveend', function() {
+          // Get the current map bounds
+          var bounds = map.getBounds();
+
+          // Send a message to the worker to filter the GeoJSON data
+          worker.postMessage({
+            cmd: 'filter',
+            geojsonData: geojsonData,
+            bounds: {
+              minX: bounds.getWest(),
+              minY: bounds.getSouth(),
+              maxX: bounds.getEast(),
+              maxY: bounds.getNorth()
+            }
+          });
+        });
+      });
+  </script>
+</body>
+</html>
