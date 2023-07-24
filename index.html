@@ -28,16 +28,19 @@
     worker.addEventListener('message', function(e) {
       var data = e.data;
 
-      switch (data.cmd) {
+    switch (data.cmd) {
         case 'filtered':
           // Clear the existing GeoJSON data
-          geojsonLayer.clearLayers();
-
+          if (window.geojsonLayer) {
+            window.geojsonLayer.remove();
+          }
+        
           // Add the new GeoJSON data to your layer
-          geojsonLayer.addData({
-            type: 'FeatureCollection',
-            features: data.features
-          });
+          window.geojsonLayer = L.geoJson(data.features, {
+            onEachFeature: function (feature, layer) {
+              layer.bindPopup(feature.properties.mod_BDU.toString());
+            }
+          }).addTo(map);
           break;
 
         default:
