@@ -20,7 +20,7 @@
     }).addTo(map);
 
     // Add a GeoJSON layer to your map
-    var geojsonLayer = L.geoJson(geojsonData, {
+    var geojsonLayer = L.geoJson({
     style: function (feature) {
       return {
         color: 'red',      // Outline color
