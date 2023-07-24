@@ -14,8 +14,9 @@
     var map = L.map('map').setView([44.4606, 26.1116], 17);
 
     // Add a base map
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19
+    googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+        maxZoom: 19,
+        subdomains:['mt0','mt1','mt2','mt3']
     }).addTo(map);
 
     // Add a GeoJSON layer to your map
