@@ -20,15 +20,7 @@
     }).addTo(map);
 
     // Add a GeoJSON layer to your map
-    var geojsonLayer = L.geoJson({
-    style: function (feature) {
-      return {
-        color: 'red',      // Outline color
-        fillColor: 'red',  // Fill color
-        fillOpacity: 0.5   // Opacity of the fill
-      };
-    }
-  }).addTo(map);
+    var geojsonLayer = L.geoJson().addTo(map);
 
     // Create a worker
     var worker = new Worker('worker.js');
