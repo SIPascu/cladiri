@@ -1,3 +1,5 @@
+importScripts('https://unpkg.com/@turf/turf/turf.min.js');
+
 self.addEventListener('message', function(e) {
   var data = e.data;
 
