@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
+<! -- ionut.silviu.pascu@gmail.com -->
 <head>
-  <title>Leaflet GeoJSON Filtering with Web Worker</title>
+  <title></title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="https://unpkg.com/@turf/turf/turf.min.js"></script>
@@ -37,8 +38,27 @@
           }
         
           // Add the new GeoJSON data to your layer
-          window.geojsonLayer = L.geoJson(data.features, {
-          }).addTo(map);
+			window.geojsonLayer = L.geoJson(data.features, {
+			  onEachFeature: function (feature, layer) {
+				layer.on('click', function (e) {
+				  var properties = feature.properties;
+				  var popupContent =
+					<table>
+					  <tr>
+						<td>Niveluri</td>
+						<td>${properties.Niveluri}</td>
+					  </tr>
+					  <tr>
+						<td>An constructie</td>
+						<td>${properties.Icon_ani}</td>
+					  </tr>
+					</table>
+				  ;
+				  layer.bindPopup(popupContent).openPopup();
+				});
+			  }
+			}).addTo(map);
+
           break;
 
         default:
