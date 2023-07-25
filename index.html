@@ -43,18 +43,7 @@
 			  onEachFeature: function (feature, layer) {
 				layer.on('click', function (e) {
 				  var properties = feature.properties;
-				  var popupContent =
-					<table>
-					  <tr>
-						<td>Niveluri</td>
-						<td>${properties.Niveluri}</td>
-					  </tr>
-					  <tr>
-						<td>An constructie</td>
-						<td>${properties.Icon_ani}</td>
-					  </tr>
-					</table>
-				  ;
+				  var popupContent ="<table><tr><td>Niveluri</td><td>${properties.Niveluri}</td></tr><tr><td>An constructie</td><td>${properties.Icon_ani}</td></tr></table>";
 				  layer.bindPopup(popupContent).openPopup();
 				});
 			  }
