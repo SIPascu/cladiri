@@ -42,6 +42,25 @@
               layer.bindPopup(feature.properties.mod_BDU.toString());
             }
           }).addTo(map);
+		  
+		  var blackContourLayer = L.geoJson(sectoare.geojson, {
+		  style: {
+			color: 'black',
+			fillColor: '#000000',
+			fillOpacity: 0.3,
+			weight: 2
+		  }
+		  }).addTo(map);
+		  
+		 var redContourLayer = L.geoJson(ZP.geojson, {
+		  style: {
+			color: 'red',
+			fillColor: 'red',
+			fillOpacity: 0.3,
+			weight: 2
+		  }
+		  }).addTo(map);
+		  		  
           break;
 
         default:
